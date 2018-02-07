@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Report example.</title>
+
+    <style>
+        ul.report-table {
+            margin-left: 16px;
+            margin-top: 16px;
+            padding-left: 0;
+
+            list-style: none;
+        }
+
+        ul.report-table li {
+            display: block;
+
+            margin-right: 0;
+        }
+
+        ul.report-table li:after {
+            display: table;
+            clear: both;
+
+            content: "";
+        }
+
+        ul.report-table .table-col {
+            float: left;
+            width: 125px;
+
+            padding-left: 10px;
+            padding-top: 4px;
+            padding-bottom: 4px;
+
+            background-color: #eee;
+        }
+
+        ul.report-table .table-col.even {
+            background-color: #ddd;
+        }
+
+        ul.report-table .table-col.header {
+            background-color: #bbb;
+        }
+    </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.5/lodash.min.js"></script>
+    <script>
+        function loadData() {
+            $.get('/example.php', function(data) {
+                if (!('error' in data)) populateTable(data);
+            });
+        }
+
+        function populateTable(data) {
+            const tmpl_tableRow = _.template(
+                '<li>' +
+                    '<div class="table-col"><%= name %></div>' +
+                    '<div class="table-col even"><%= unit_price %></div>' +
+                    '<div class="table-col"><%= qty_sold %></div>' +
+                    '<div class="table-col even"><%= gross_total %></div>' +
+                    // '<div class="clearfix"></div>' +
+                '</li>'
+            );
+
+            data.items.forEach(function(row) {
+                let el_newRow = tmpl_tableRow({
+                    'name': row.name,
+                    'unit_price': '$' + row.unit_price.toFixed(),
+                    'qty_sold': row.qty_sold,
+                    'gross_total': '$' + row.gross_total.toFixed(2)
+                });
+
+                $('.report-table').append(el_newRow);
+            });
+        }
+
+        $(document).ready(loadData());
+    </script>
+</head>
+<body>
+    <ul class="report-table">
+        <li>
+            <div class="table-col header">Item Name</div>
+            <div class="table-col header">Unit Price</div>
+            <div class="table-col header">Qty Sold</div>
+            <div class="table-col header">Gross Sales</div>
+            <!-- <div class="clearfix"></div> -->
+        </li>
+    </ul>
+</body>
+</html>
