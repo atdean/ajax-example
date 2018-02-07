@@ -1,0 +1,39 @@
+ul.report-table {
+    margin-left: 16px;
+    margin-top: 16px;
+    padding-left: 0;
+
+    list-style: none;
+}
+
+ul.report-table li {
+    display: block;
+
+    margin-right: 0;
+}
+
+ul.report-table li:after {
+    display: table;
+    clear: both;
+
+    content: "";
+}
+
+ul.report-table .table-col {
+    float: left;
+    width: 125px;
+
+    padding-left: 10px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+
+    background-color: #eee;
+}
+
+ul.report-table .table-col.even {
+    background-color: #ddd;
+}
+
+ul.report-table .table-col.header {
+    background-color: #bbb;
+}
